@@ -785,11 +785,11 @@ a{text-decoration:none;color:inherit;}
           <div class="order-aside">
             <div class="oa-hdr">สรุปรายการ</div>
             <div class="oa-body">
-              <div style="font-size:13px;color:#ccc;padding:10px 0;text-align:center;">ยังไม่มีรายการ</div>
-              <div class="oa-row"><span>ราคารวม</span><span>—</span></div>
-              <div class="oa-row"><span>ค่าจัดส่ง</span><span>30 บาท</span></div>
+              <div id="oaItems"><div style="font-size:13px;color:#ccc;padding:10px 0;text-align:center;">ยังไม่มีรายการ</div></div>
+              <div class="oa-row"><span>ราคารวม</span><span id="oaSub">—</span></div>
+              <div class="oa-row"><span>ค่าจัดส่ง</span><span id="oaShip">30 บาท</span></div>
             </div>
-            <div class="oa-total"><span>รวมทั้งสิ้น</span><span>—</span></div>
+            <div class="oa-total"><span>รวมทั้งสิ้น</span><span id="oaTotal">—</span></div>
             <div class="oa-note">สั่งครบ 300 บาทขึ้นไปในเขตอำเภอท่าม่วง รับบริการจัดส่งฟรีทันที</div>
           </div>
         </div>
@@ -951,7 +951,7 @@ function submitOrder(){
   var items=[];
   rows.forEach(function(r){
     var sel=r.querySelector('select');
-    var qty=r.querySelector('input[type="number"]');
+    var qty=r.querySelectorAll('select')[1];
     if(sel&&qty&&sel.value&&!sel.value.includes('-- เลือก')){
       var m=sel.value.match(/(.+?)\s*\((\d+)\s*บาท\)/);
       if(m)items.push({name:m[1].trim(),price:parseInt(m[2]),qty:parseInt(qty.value)||1});
@@ -966,6 +966,38 @@ function submitOrder(){
     .catch(function(){toast('ส่งไม่ได้ กรุณาโทร 034-611-234');});
 }
 function resetOrder(){document.getElementById('orderItems').innerHTML='';addItem();}
+
+// ORDER SUMMARY (live)
+function updateSummary(){
+  var rows=document.querySelectorAll('#orderItems .order-row');
+  var list=document.getElementById('oaItems');
+  if(!list)return;
+  var html='',sub=0,count=0;
+  rows.forEach(function(r){
+    var sels=r.querySelectorAll('select');
+    var sel=sels[0],qty=sels[1];
+    if(!sel)return;
+    var m=sel.value.match(/(.+?)\s*\((\d+)\s*บาท\)/);
+    if(!m)return;
+    var q=parseInt(qty&&qty.value)||1,p=parseInt(m[2]),line=p*q;
+    sub+=line;count++;
+    var name=m[1].trim().replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    html+='<div class="oa-row"><span>'+name+' × '+q+'</span><span style="color:#1a1a1a;">'+line.toLocaleString('th-TH')+' บาท</span></div>';
+  });
+  var free=sub>=300,ship=count?(free?0:30):30;
+  list.innerHTML=count?html:'<div style="font-size:13px;color:#ccc;padding:10px 0;text-align:center;">ยังไม่มีรายการ</div>';
+  document.getElementById('oaSub').textContent=count?sub.toLocaleString('th-TH')+' บาท':'—';
+  document.getElementById('oaShip').innerHTML=count&&free?'<span style="color:#2e7d32;">ฟรี</span>':'30 บาท';
+  document.getElementById('oaTotal').textContent=count?(sub+ship).toLocaleString('th-TH')+' บาท':'—';
+}
+(function(){
+  var box=document.getElementById('orderItems');
+  if(!box)return;
+  box.addEventListener('change',updateSummary);
+  box.addEventListener('input',updateSummary);
+  new MutationObserver(updateSummary).observe(box,{childList:true});
+  updateSummary();
+})();
 
 // SURVEY
 const sqs=[

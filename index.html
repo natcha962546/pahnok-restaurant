@@ -7,7 +7,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;height:100%;}
+body{height:100%;overflow-y:auto;}
 body{font-family:'Sarabun',sans-serif;background:#fff;color:#1a1a1a;font-size:15px;line-height:1.7;}
 button,input,select,textarea{font-family:'Sarabun',sans-serif;}
 img{display:block;max-width:100%;}
@@ -18,7 +19,7 @@ a{text-decoration:none;color:inherit;}
 .img-ph svg{opacity:.4;}
 
 /* ── NAVBAR ── */
-.navbar{position:fixed;top:0;left:0;right:0;z-index:999;background:rgba(255,255,255,.97);border-bottom:1px solid #e8e0d8;}
+.navbar{position:sticky;top:0;left:0;right:0;z-index:999;background:rgba(255,255,255,.97);border-bottom:1px solid #e8e0d8;}
 .nav-inner{max-width:1200px;margin:0 auto;padding:0 32px;height:68px;display:flex;align-items:center;justify-content:space-between;}
 .nav-logo{display:flex;flex-direction:column;align-items:flex-start;cursor:pointer;border:none;background:none;text-align:left;}
 .nav-logo-main{font-family:'Prompt',sans-serif;font-size:17px;font-weight:600;color:#1a1a1a;letter-spacing:.3px;line-height:1.2;}
@@ -754,9 +755,9 @@ a{text-decoration:none;color:inherit;}
           <div class="form-block" style="margin-bottom:16px;">
             <div class="form-block-hdr">01 — ข้อมูลลูกค้า</div>
             <div class="form-block-body">
-              <div class="frow"><div class="fgrp"><label class="flbl">ชื่อ-นามสกุล <span class="freq">*</span></label><input class="finp" placeholder="กรอกชื่อ-นามสกุล"/></div><div class="fgrp"><label class="flbl">โทรศัพท์ <span class="freq">*</span></label><input class="finp" type="tel" placeholder="0XX-XXX-XXXX"/></div></div>
-              <div class="frow"><div class="fgrp"><label class="flbl">อีเมล</label><input class="finp" type="email" placeholder="email@example.com"/></div><div class="fgrp"><label class="flbl">ช่องทางติดต่อกลับ <span class="freq">*</span></label><select class="finp fsel"><option>โทรศัพท์</option><option>LINE</option><option>Facebook</option></select></div></div>
-              <div class="fgrp"><label class="flbl">ที่อยู่จัดส่ง <span class="freq">*</span></label><input class="finp" placeholder="กรอกที่อยู่จัดส่ง (เฉพาะเขตอำเภอท่าม่วง)"/></div>
+              <div class="frow"><div class="fgrp"><label class="flbl">ชื่อ-นามสกุล <span class="freq">*</span></label><input id="f-name" class="finp" placeholder="กรอกชื่อ-นามสกุล"/></div><div class="fgrp"><label class="flbl">โทรศัพท์ <span class="freq">*</span></label><input id="f-phone" class="finp" type="tel" placeholder="0XX-XXX-XXXX"/></div></div>
+              <div class="frow"><div class="fgrp"><label class="flbl">อีเมล</label><input id="f-email" class="finp" type="email" placeholder="email@example.com"/></div><div class="fgrp"><label class="flbl">ช่องทางติดต่อกลับ <span class="freq">*</span></label><select id="f-otype" class="finp fsel">><option>โทรศัพท์</option><option>LINE</option><option>Facebook</option></select></div></div>
+              <div class="fgrp"><label class="flbl">ที่อยู่จัดส่ง <span class="freq">*</span></label><input id="f-address" class="finp" placeholder="กรอกที่อยู่จัดส่ง (เฉพาะเขตอำเภอท่าม่วง)"/></div>
             </div>
           </div>
           <div class="form-block" style="margin-bottom:16px;">
@@ -940,7 +941,30 @@ function addItem(){
   r.innerHTML=`<div><label class="flbl">เมนูอาหาร *</label><select class="finp fsel"><option>-- เลือกเมนู --</option><option>ข้าวหมูทอดกระเทียม (65 บาท)</option><option>ปลาทูผัดพริก (80 บาท)</option><option>ข้าวผัดทะเล (90 บาท)</option><option>ไข่เจียวปูทรงเครื่อง (90 บาท)</option><option>ผัดผักบุ้งไฟแดง (55 บาท)</option><option>ผัดพริกแกงหมู (75 บาท)</option><option>ข้าวผัดกะเพราเนื้อไข่ดาว (85 บาท)</option><option>ผัดกะเพราหมึกไข่เค็ม (90 บาท)</option><option>ยำมาม่า (60 บาท)</option><option>สุกี้น้ำ (70 บาท)</option><option>ผัดไทยกุ้งสดห่อไข่ (90 บาท)</option><option>ผัดซีอิ๊วหมู (65 บาท)</option><option>ข้าวผัดกะเพราไก่ (70 บาท)</option><option>ข้าวไข่เจียวหมูสับ (60 บาท)</option><option>สปาเก็ตตี้ผัดกะเพราทะเล (100 บาท)</option><option>มาม่าผัดพริกแกงไก่ (65 บาท)</option><option>ผัดเปรี้ยวหวานไก่ (75 บาท)</option><option>ปลาทอดผัดขิง (85 บาท)</option><option>ผัดหอมใหญ่หมูสับ (65 บาท)</option><option>ไก่ผัดกระเทียมพริกไทย (70 บาท)</option><option>หมึกผัดไข่เค็ม (90 บาท)</option><option>กุ้งผัดผักรวม (90 บาท)</option><option>หมูกรอบผัดกะหล่ำปลี (80 บาท)</option><option>ผัดคะน้าหมู (65 บาท)</option><option>ผัดพริกแกงหมูถั่วฝักยาว (75 บาท)</option><option>ข้าวผัดกะเพราหมูสับไข่ดาว (70 บาท)</option><option>ผัดไทยกุ้งสด (90 บาท)</option><option>ช็อกโกแลตเย็น (35 บาท)</option><option>ชาเย็นมะนาว (35 บาท)</option><option>ชาไทยนมสด (35 บาท)</option><option>กาแฟส้ม (40 บาท)</option><option>มัทฉะลาเต้เย็น (40 บาท)</option></select></div><div><label class="flbl">จำนวน</label><select class="finp fsel"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div><div style="padding-top:22px;"><button class="btn-del" onclick="this.closest('.order-row').remove()">✕</button></div>`;
   document.getElementById('orderItems').appendChild(r);
 }
-function submitOrder(){toast('ขอบคุณที่สั่งอาหาร ทางร้านจะโทรยืนยันภายใน 15 นาทีค่ะ');}
+function submitOrder(){
+  var name=document.getElementById('f-name')?.value.trim();
+  var phone=document.getElementById('f-phone')?.value.trim();
+  var otype=document.getElementById('f-otype')?.value||'ทานที่ร้าน';
+  var address=document.getElementById('f-address')?.value.trim()||'';
+  if(!name||!phone){toast('กรุณากรอกชื่อและเบอร์โทรครับ');return;}
+  var rows=document.querySelectorAll('#orderItems .order-row');
+  var items=[];
+  rows.forEach(function(r){
+    var sel=r.querySelector('select');
+    var qty=r.querySelector('input[type="number"]');
+    if(sel&&qty&&sel.value&&!sel.value.includes('-- เลือก')){
+      var m=sel.value.match(/(.+?)\s*\((\d+)\s*บาท\)/);
+      if(m)items.push({name:m[1].trim(),price:parseInt(m[2]),qty:parseInt(qty.value)||1});
+    }
+  });
+  if(!items.length){toast('กรุณาเลือกเมนูอย่างน้อย 1 รายการครับ');return;}
+  var note=document.querySelector('#page-order textarea')?.value||'';
+  var payload=JSON.stringify({type:'order',name:name,phone:phone,orderType:otype,address:address,note:note,items:items});
+  toast('กำลังส่งออเดอร์...');
+  fetch('https://script.google.com/macros/s/AKfycbzd4-OT6Fl8zvs5i1taRpMX7HDHhNJx-hrLOOLOgnSTahjf8qwTTnBhtDc2OAAkN5j3/exec',{method:'POST',mode:'no-cors',body:payload})
+    .then(function(){toast('ขอบคุณ! ทางร้านจะโทรยืนยันภายใน 15 นาทีค่ะ');resetOrder();})
+    .catch(function(){toast('ส่งไม่ได้ กรุณาโทร 034-611-234');});
+}
 function resetOrder(){document.getElementById('orderItems').innerHTML='';addItem();}
 
 // SURVEY
@@ -990,7 +1014,21 @@ function buildSurvey(){
   tbl.innerHTML=html;
   w.appendChild(tbl);
 }
-function submitSurvey(){toast('ขอบคุณสำหรับการประเมิน ข้อมูลจะถูกบันทึกใน Google Sheets ค่ะ');}
+function submitSurvey(){
+  var answers={};
+  document.querySelectorAll('#page-survey input[type=radio]:checked').forEach(function(r){
+    answers[r.name]=r.value;
+  });
+  var answered=Object.keys(answers).length;
+  if(answered<14){toast('กรุณาตอบให้ครบ 14 ข้อครับ (ตอบแล้ว '+answered+' ข้อ)');return;}
+  var comment=document.querySelector('#page-survey textarea')?.value||'';
+  var payload={type:'survey',comment:comment};
+  for(var i=1;i<=14;i++) payload['q'+i]=answers['sq'+i]||0;
+  toast('กำลังส่งข้อมูล...');
+  fetch('https://script.google.com/macros/s/AKfycbzd4-OT6Fl8zvs5i1taRpMX7HDHhNJx-hrLOOLOgnSTahjf8qwTTnBhtDc2OAAkN5j3/exec',{method:'POST',mode:'no-cors',body:JSON.stringify(payload)})
+    .then(function(){toast('ขอบคุณสำหรับการประเมิน! ข้อมูลถูกบันทึกแล้วค่ะ');})
+    .catch(function(){toast('ส่งไม่ได้ กรุณาลองใหม่');});
+}
 
 // TOAST
 function toast(msg){
